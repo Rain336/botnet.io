@@ -1,0 +1,25 @@
+{
+  "name": "botnet-io",
+  "version": "1.0.0",
+  "description": "A io-game about programming.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/Rain336/botnet"
+  },
+  "author": "Rain336",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/createjs": "0.0.29",
+    "@types/node": "^8.0.6",
+    "browserify": "^14.4.0",
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.8",
+    "gulp-webserver": "^0.9.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  }
+}
