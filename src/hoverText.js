@@ -19,23 +19,23 @@ class HoverText extends createjs.Container {
 
         this.visible = false;
         this.addChild(this.box, this.text);
-        this.x = x * renderer.bo;
-        this.y = y * renderer.bo + 5 + renderer.gtp;
+        this.update(x, y);
     }
 
     addStage(stage, target) {
-        const container = this;
-
         target.on("mouseover", function (event) {
-            container.visible = true;
-            stage.update();
-        });
+            this.visible = true;
+        }, this);
         target.on("mouseout", function (event) {
-            container.visible = false;
-            stage.update();
-        });
+            this.visible = false;
+        }, this);
 
         stage.addChild(this);
+    }
+
+    update(x, y) {
+        this.x = x * renderer.bo;
+        this.y = y * renderer.bo + 5 + renderer.gtp;
     }
 }
 

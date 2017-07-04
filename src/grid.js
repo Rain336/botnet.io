@@ -1,14 +1,12 @@
-const gtp = 64;
-const bo = gtp + 7;
-const pc = "red";
+const renderer = require("./renderer");
 
 module.exports = function(stage) {
     const grid = new createjs.Shape();
     grid.graphics.setStrokeStyle(8);
 
     var x = 0;
-    while (x <= 800) {
-        x += gtp;
+    while (x <= renderer.stage.canvas.width) {
+        x += renderer.gtp;
         grid.graphics
             .beginStroke("blue")
             .moveTo(x, 0)
@@ -18,8 +16,8 @@ module.exports = function(stage) {
     }
 
     var y = 0;
-    while (y <= 600) {
-        y += gtp;
+    while (y <= renderer.stage.canvas.height) {
+        y += renderer.gtp;
         grid.graphics
             .beginStroke("blue")
             .moveTo(0, y)

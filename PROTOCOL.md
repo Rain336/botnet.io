@@ -9,37 +9,6 @@
 |varint|base-128 variable sized Integer.|
 |string|A varint-prefixed UTF-8 string.|
 
-## Data Structures
-
-### Base
-|Name|Type|
-|----|----|
-|name|string|
-|x|short|
-|y|short|
-|color|string|
-
-### Bot
-|Name|Type|
-|----|----|
-|name|string|
-|x|short|
-|y|short|
-|color|string|
-
-### Resource
-|Name|Type|
-|----|----|
-|type|byte enum|
-|x|short|
-|y|short|
-|color|string|
-
-Types:
-- Crystal (0)
-- Metal (1)
-- Erchius Fuel (2)
-
 ## Packets
 
 ### Basic structure
@@ -49,7 +18,7 @@ Types:
 |token|int|
 
 ### 0x00 | Login Request Packet (Client -> Server)
-Token is 0 if Player is unknowen.
+Token is 0 if the Player is new.
 |Name|Type|
 |----|----|
 |GridToPixel|byte|
@@ -69,26 +38,44 @@ Token is 0 if Player is unknowen.
 |TotalEnergy|varint|
 |UsedEnergy|varint|
 
-### 0x03 | View Request Packet (Client -> Server)
+## 0x03 | Add Entity Packet (Server -> Client)
 |Name|Type|
 |----|----|
-|x|short|
-|y|short|
+|Entries|varint|
+|Entities|Entity[]|
 
-### 0x04 | View Update Packet (Client -> Server)
+### Entity
 |Name|Type|
 |----|----|
-|ChangeX|int|
-|ChangeY|int|
+|Id|int|
+|Name|string|
+|X|varint|
+|Y|varint|
+|Color|string|
+|Type|byte|
 
-### 0x05 | View Response Packet (Server -> Client)
+### Type
+- Base (0)
+- Bot (1)
+- Crystal (2)
+- Metal (3)
+- Erchius Fuel (4)
+
+## 0x04 | Entity Move Packet (Server <-> Client)
 |Name|Type|
 |----|----|
-|x|short|
-|y|short|
-|BaseCount|varint|
-|Bases|Base[]|
-|BotCount|varint|
-|Bots|Bot[]|
-|ResourceCount|varint|
-|Resources|Resource[]|
+|Entries|varint|
+|Updates|Move[]|
+
+### Move
+|Name|Type|
+|----|----|
+|Id|int|
+|X|varint|
+|Y|varint|
+
+## 0x05 | Move Player Packet (Client -> Server)
+|Name|Type|
+|----|----|
+|X|varint|
+|Y|varint|

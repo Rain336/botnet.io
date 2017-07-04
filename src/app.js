@@ -3,6 +3,9 @@ const packets = require("./packets");
 const player = require("./player");
 const renderer = require("./renderer");
 const preload = require("./preload");
+const Base = require("./base");
+const Bot = require("./bot");
+const resource = require("./resource");
 
 class Client {
     constructor() {
@@ -15,15 +18,19 @@ class Client {
             const id = buffer.readByte();
             switch (id) {
                 case 1:
-                    client.loginResponse(new packets.LoginResponsePacket.fromBuffer(id, buffer));
+                    client.loginResponse(packets.LoginResponsePacket.fromBuffer(id, buffer));
                     break;
 
                 case 2:
-                    client.clientData(new packets.ClientDataPacket.fromBuffer(id, buffer));
+                    client.clientData(packets.ClientDataPacket.fromBuffer(id, buffer));
                     break;
 
-                case 5:
-                    client.viewResponse(new packets.ViewResponsePacket.fromBuffer(id, buffer));
+                case 3:
+                    client.addEntity(packets.AddEntityPacket.fromBuffer(id, buffer));
+                    break;
+
+                case 4:
+                    client.moveEntity(packets.EntityMovePacket.fromBuffer(id, buffer));
                     break;
 
                 default:
@@ -41,14 +48,6 @@ class Client {
         this.socket.send(packet.toByteArray());
     }
 
-    sendViewRequest() {
-        const packet = new packets.ViewRequestPacket(0x03);
-        result.token = player.token;
-        result.x = renderer.x;
-        result.y = renderer.y;
-        this.socket.send(packet.toByteArray());
-    }
-
     loginResponse(packet) {
         player.token = packet.token;
     }
@@ -61,19 +60,41 @@ class Client {
         player.usedEnergy = packet.usedEnergy;
 
         renderer.updateUi();
-
-        this.sendViewRequest();
     }
 
-    viewResponse(packet) {
-        renderer.x = packet.x;
-        renderer.y = packet.y;
-        renderer.bases = packet.bases;
-        renderer.bots = packet.bots;
-        renderer.resources = packet.resources;
+    addEntity(packet) {
+        packet.entities.forEach(e => {
+            switch (e.type) {
+                case 0:
+                    new Base(e.id, e.name, e.x, e.y, e.color);
+                    break;
 
-        renderer.stage.removeAllChildren();
-        renderer.init();
+                case 1:
+                    new Bot(e.id, e.name, e.x, e.y, e.color);
+                    break;
+
+                case 2:
+                    new resource.Resource(e.id, e.x, e.y, resource.ResourceType.crystal);
+                    break;
+
+                case 3:
+                    new resource.Resource(e.id, e.x, e.y, resource.ResourceType.metal);
+                    break;
+
+                case 4:
+                    new resource.Resource(e.id, e.x, e.y, resource.ResourceType.fuel);
+                    break;
+
+                default:
+                    break;
+            }
+        });
+    }
+
+    moveEntity(packet) {
+        packet.updates.forEach(e => {
+            renderer.move(e.id, e.x, e.y);
+        });
     }
 }
 
@@ -104,7 +125,9 @@ if ("x" in cookies && "y" in cookies) {
     renderer.y = cookies["y"];
 }
 
-preload.on("complete", function(event) {
+/*preload.on("complete", function (event) {
     const client = new Client();
     client.sendLoginRequest();
-})
+})*/
+const client = new Client();
+client.sendLoginRequest();

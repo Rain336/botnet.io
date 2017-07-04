@@ -13,6 +13,7 @@ class Renderer {
         this.bases = [];
         this.bots = [];
         this.resources = [];
+        this.map = {}
         /*this.crystal = new Label(preload.getResult("iconCrystal"), "0", "20px Fira Mono", "blue", 140, 20);
         this.metal = new Label(preload.getResult("iconMetal"), "0", "20px Fira Mono", "blue", 90, 20);
         this.fuel = new Label(preload.getResult("iconFuel"), "0", "20px Fira Mono", "blue", 40, 20);*/
@@ -29,16 +30,33 @@ class Renderer {
         this.resources.forEach(b => b.addStage(this.stage));
 
         //this.stage.addChild(this.fuel, this.metal, this.crystal);
-
-        this.stage.update();
     }
 
     updateUi() {
         this.crystal.text.text = player.crystals;
         this.metal.text.text = player.metal;
         this.fuel.text.text = player.fuel;
-        
-        this.stage.update();
+    }
+
+    move(id, x, y) {
+        const entity = this.map[id];
+        createjs.Tween.get(entity).to({ x: x, y: y });
+        entity.text.update(x, y);
+    }
+
+    addBase(base) {
+        this.bases.push(base);
+        this.map[base.id] = base;
+    }
+
+    addBot(bot) {
+        this.bots.push(bot);
+        this.map[bot.id] = bot;
+    }
+
+    addResource(resource) {
+        this.resources.push(resource);
+        this.map[resource.id] = resource;
     }
 }
 
