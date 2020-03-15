@@ -1,10 +1,14 @@
-import { Game, AUTO } from 'phaser';
+import { Game, AUTO, Scale } from 'phaser';
 import { GameScene } from './scenes/game';
 
 const game = new Game({
     type: AUTO,
-    width: 1280,
-    height: 720,
+    backgroundColor: 0x1F1F1F,
+    scale: {
+        mode: Scale.RESIZE,
+        width: '100%',
+        height: '100%'
+    },
     physics: {
         default: 'arcade',
         arcade: {
