@@ -1,0 +1,24 @@
+{
+  "name": "botnet-io",
+  "version": "1.0.0",
+  "description": "A Game UwU",
+  "main": "index.js",
+  "author": "Rain336",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "set NODE_ENV=production && webpack"
+  },
+  "devDependencies": {
+    "terser-webpack-plugin": "^2.3.5",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "phaser": "^3.22.0"
+  }
+}
