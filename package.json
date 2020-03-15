@@ -4,7 +4,7 @@
   "description": "A Game UwU",
   "main": "index.js",
   "author": "Rain336",
-  "license": "UNLICENSED",
+  "license": "MIT License",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server",
